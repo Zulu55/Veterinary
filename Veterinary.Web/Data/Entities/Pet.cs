@@ -1,6 +1,7 @@
 ﻿namespace Veterinary.Web.Data.Entities
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
     public class Pet
@@ -28,5 +29,7 @@
 
         [Display(Name = "Observaciones")]
         public string Remarks { get; set; }
+
+        public ICollection<History> Histories { get; set; }
     }
 }

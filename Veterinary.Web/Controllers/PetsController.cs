@@ -27,6 +27,92 @@
             return View(await _context.Pets.Include(p => p.Owner).Include(p => p.PetType).ToListAsync());
         }
 
+        public async Task<IActionResult> DeleteHistory(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var history = await _context.Histories.FindAsync(id.Value);
+            if (history == null)
+            {
+                return NotFound();
+            }
+
+            this._context.Histories.Remove(history);
+            await this._context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public async Task<IActionResult> AddHistory(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var pet = await _context.Pets.FindAsync(id.Value);
+            if (pet == null)
+            {
+                return NotFound();
+            }
+
+            var view = new HistoryViewModel
+            {
+                PetId = pet.Id,
+                ServiceTypes = this.GetComboServiceTypes()
+            };
+
+            return View(view);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddHistory(HistoryViewModel view)
+        {
+            if (ModelState.IsValid)
+            {
+                var pet = await this._context.Pets
+                    .Include(p => p.Histories)
+                    .Where(p => p.Id == view.PetId)
+                    .FirstOrDefaultAsync();
+                if (pet != null)
+                {
+                    var serviceType = await this._context.ServiceTypes.FindAsync(view.ServiceTypeId);
+                    var history = new History
+                    {
+                        Date = DateTime.Now,
+                        Desription = view.Desription,
+                        Remarks = view.Remarks,
+                        ServiceType = serviceType,
+                    };
+
+                    pet.Histories.Add(history);
+                    await this._context.SaveChangesAsync();
+                    return RedirectToAction($"Details/{view.PetId}");
+                }
+            }
+
+            return View(view);
+        }
+
+        private IEnumerable<SelectListItem> GetComboServiceTypes()
+        {
+            var list = this._context.ServiceTypes.Select(p => new SelectListItem
+            {
+                Text = p.Name,
+                Value = p.Id.ToString()
+            }).OrderBy(p => p.Text).ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "(Seleccione un tipo de servicio...)",
+                Value = "0"
+            });
+
+            return list;
+        }
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -37,6 +123,7 @@
             var pet = await _context.Pets
                 .Include(p => p.Owner)
                 .Include(p => p.PetType)
+                .Include(p => p.Histories)
                 .Where(p => p.Id == id.Value)
                 .FirstOrDefaultAsync();
             if (pet == null)
@@ -65,7 +152,7 @@
             {
                 Text = p.Name,
                 Value = p.Id.ToString()
-            }).ToList();
+            }).OrderBy(p => p.Text).ToList();
 
             list.Insert(0, new SelectListItem
             {
@@ -82,7 +169,7 @@
             {
                 Text = p.FullNameWithDocument,
                 Value = p.Id.ToString()
-            }).ToList();
+            }).OrderBy(p => p.Text).ToList();
 
             list.Insert(0, new SelectListItem
             {

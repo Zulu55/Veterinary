@@ -16,5 +16,7 @@
         public DbSet<Pet> Pets { get; set; }
 
         public DbSet<ServiceType> ServiceTypes { get; set; }
+
+        public DbSet<History> Histories { get; set; }
     }
 }
