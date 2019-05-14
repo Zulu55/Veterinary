@@ -1,0 +1,41 @@
+﻿@model Veterinary.Web.Models.AgendaViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Asignar</h2>
+
+<h4>Agenga</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Assing">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="OwnerId" class="control-label"></label>
+                <select asp-for="OwnerId" asp-items="Model.Owners" class="form-control"></select>
+                <span asp-validation-for="OwnerId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="PetId" class="control-label"></label>
+                <select asp-for="PetId" asp-items="Model.Pets" class="form-control"></select>
+                <span asp-validation-for="PetId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Remarks" class="control-label"></label>
+                <textarea asp-for="Remarks" class="form-control"></textarea>
+                <span asp-validation-for="Remarks" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-success">Regresar</a>
+            </div>
+        </form>
+    </div>
+</div>
