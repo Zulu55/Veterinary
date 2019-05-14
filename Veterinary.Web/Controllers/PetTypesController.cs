@@ -9,18 +9,18 @@
     using Microsoft.EntityFrameworkCore;
 
     [Authorize]
-    public class OwnersController : Controller
+    public class PetTypesController : Controller
     {
         private readonly DataContext _context;
 
-        public OwnersController(DataContext context)
+        public PetTypesController(DataContext context)
         {
             _context = context;
         }
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Owners.ToListAsync());
+            return View(await _context.PetTypes.ToListAsync());
         }
 
         public async Task<IActionResult> Details(int? id)
@@ -30,14 +30,14 @@
                 return NotFound();
             }
 
-            var owner = await _context.Owners
+            var petType = await _context.PetTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (owner == null)
+            if (petType == null)
             {
                 return NotFound();
             }
 
-            return View(owner);
+            return View(petType);
         }
 
         public IActionResult Create()
@@ -47,15 +47,15 @@
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Owner owner)
+        public async Task<IActionResult> Create(PetType petType)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(owner);
+                _context.Add(petType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(owner);
+            return View(petType);
         }
 
         public async Task<IActionResult> Edit(int? id)
@@ -65,28 +65,28 @@
                 return NotFound();
             }
 
-            var owner = await _context.Owners.FindAsync(id);
-            if (owner == null)
+            var petType = await _context.PetTypes.FindAsync(id);
+            if (petType == null)
             {
                 return NotFound();
             }
-            return View(owner);
+            return View(petType);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Owner owner)
+        public async Task<IActionResult> Edit(PetType petType)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(owner);
+                    _context.Update(petType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OwnerExists(owner.Id))
+                    if (!PetTypeExists(petType.Id))
                     {
                         return NotFound();
                     }
@@ -97,7 +97,7 @@
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(owner);
+            return View(petType);
         }
 
         public async Task<IActionResult> Delete(int? id)
@@ -107,29 +107,29 @@
                 return NotFound();
             }
 
-            var owner = await _context.Owners
+            var petType = await _context.PetTypes
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (owner == null)
+            if (petType == null)
             {
                 return NotFound();
             }
 
-            return View(owner);
+            return View(petType);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var owner = await _context.Owners.FindAsync(id);
-            _context.Owners.Remove(owner);
+            var petType = await _context.PetTypes.FindAsync(id);
+            _context.PetTypes.Remove(petType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool OwnerExists(int id)
+        private bool PetTypeExists(int id)
         {
-            return _context.Owners.Any(e => e.Id == id);
+            return _context.PetTypes.Any(e => e.Id == id);
         }
     }
 }

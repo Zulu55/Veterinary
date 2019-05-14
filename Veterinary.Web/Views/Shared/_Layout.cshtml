@@ -32,6 +32,18 @@
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Inicio</a></li>
                     <li><a asp-area="" asp-controller="Owners" asp-action="Index">Propietarios</a></li>
+                    <li><a asp-area="" asp-controller="PetTypes" asp-action="Index">Tipos de Mascotas</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        <li><a asp-area="" asp-controller="Account" asp-action="ChangeUser">@this.User.Identity.Name</a></li>
+                        <li><a asp-area="" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Ingresar</a></li>
+                    }
                 </ul>
             </div>
         </div>
