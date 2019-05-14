@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Veterinary.Web.Data;
 
 namespace Veterinary.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20190514143019_PetRequiereds")]
+    partial class PetRequiereds
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,9 +175,9 @@ namespace Veterinary.Web.Migrations
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<int?>("OwnerId");
+                    b.Property<int>("OwnerId");
 
-                    b.Property<int?>("PetTypeId");
+                    b.Property<int>("PetTypeId");
 
                     b.Property<string>("Race")
                         .HasMaxLength(50);
@@ -314,11 +316,13 @@ namespace Veterinary.Web.Migrations
                 {
                     b.HasOne("Veterinary.Web.Data.Entities.Owner", "Owner")
                         .WithMany()
-                        .HasForeignKey("OwnerId");
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Veterinary.Web.Data.Entities.PetType", "PetType")
                         .WithMany()
-                        .HasForeignKey("PetTypeId");
+                        .HasForeignKey("PetTypeId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

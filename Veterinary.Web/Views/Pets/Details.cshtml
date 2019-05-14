@@ -1,0 +1,54 @@
+﻿@model Veterinary.Web.Data.Entities.Pet
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Detalles</h2>
+
+<div>
+    <h4>Mascota</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+        <dt>
+            Propietario *
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Owner.FullNameWithDocument)
+        </dd>
+        <dt>
+            Tipo Mascota *
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PetType.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Race)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Race)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Born)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Born)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Remarks)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Editar</a>
+    <a asp-action="Index" class="btn btn-success">Regresar</a>
+</div>

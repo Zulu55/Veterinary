@@ -1,0 +1,57 @@
+﻿@model Veterinary.Web.Data.Entities.Pet
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Borrar</h2>
+
+<h3>¿Está seguro de querer borrar este registro?</h3>
+<div>
+    <h4>Mascota</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+        <dt>
+            Propietario *
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Owner.FullNameWithDocument)
+        </dd>
+        <dt>
+            Tipo Mascota *
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PetType.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Race)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Race)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Born)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Born)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Remarks)
+        </dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Borrar" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-success">Regresar</a>
+    </form>
+</div>

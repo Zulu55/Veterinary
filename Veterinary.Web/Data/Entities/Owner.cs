@@ -33,5 +33,8 @@
         [MaxLength(100, ErrorMessage = "El campo {0} no puede tener más de {1} caracteres.")]
         public string Address { get; set; }
 
+        public string FullName { get { return $"{this.FirstName} {this.LastName}"; } }
+
+        public string FullNameWithDocument { get { return $"{this.FirstName} {this.LastName} - {this.Document}"; } }
     }
 }
