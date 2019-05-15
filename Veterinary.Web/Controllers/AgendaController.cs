@@ -73,7 +73,7 @@
             {
                 Id = id.Value,
                 Owners = this.GetComboOwners(),
-                Pets = this.GetComboPets()
+                Pets = this.GetComboPets(0)
             };
 
             return View(view);
@@ -102,9 +102,10 @@
             return View(view);
         }
 
-        private IEnumerable<SelectListItem> GetComboPets()
+        private IEnumerable<SelectListItem> GetComboPets(int ownerId)
         {
-            var list = this._context.Pets.Select(p => new SelectListItem
+            var pets = this._context.Pets.Where(p => p.Owner.Id == ownerId).ToList();
+            var list = pets.Select(p => new SelectListItem
             {
                 Text = p.Nombre,
                 Value = p.Id.ToString()
@@ -135,5 +136,12 @@
 
             return list;
         }
+
+        public JsonResult GetPets(int ownerId)
+        {
+            var pets = this._context.Pets.Where(p => p.Owner.Id == ownerId).ToList();
+            return this.Json(pets.OrderBy(p => p.Nombre));
+        }
+
     }
 }

@@ -39,3 +39,33 @@
         </form>
     </div>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#OwnerId").change(function () {
+                $("#PetId").empty();
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetPets")',
+                    dataType: 'json',
+                    data: { ownerId: $("#OwnerId").val() },
+                    success: function (pets) {
+                        debugger;
+                        $("#PetId").append('<option value="0">(Seleccione una mascota...)</option>');
+                        $.each(pets, function (i, pet) {
+                            $("#PetId").append('<option value="'
+                                + pet.id + '">'
+                                + pet.nombre + '</option>');
+                        });
+                    },
+                    error: function (ex) {
+                        alert('Failed to retrieve pets.' + ex);
+                    }
+                });
+                return false;
+            })
+        });
+    </script>
+}
